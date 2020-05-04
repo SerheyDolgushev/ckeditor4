@@ -2247,19 +2247,12 @@ CKEDITOR.dom.element.clearMarkers = function( database, element, removeFromDatab
 	 * @param {Boolean} isBorderBox Apply the size based on the border box model.
 	 */
 	CKEDITOR.dom.element.prototype.setSize = function( type, size, isBorderBox ) {
-		if ( typeof size == 'number' ) {
-			if ( isBorderBox && !( CKEDITOR.env.ie && CKEDITOR.env.quirks ) )
-				size -= marginAndPaddingSize.call( this, type );
+		size = CKEDITOR.tools.convertToPx( size );
 
-			this.setStyle( type, CKEDITOR.tools.cssLength( size ) );
-		} else if ( typeof size == 'string' ) {
-			size = CKEDITOR.tools.convertToPx( size );
+		if ( typeof size != 'string' && isBorderBox && !( CKEDITOR.env.ie && CKEDITOR.env.quirks ) )
+			size -= marginAndPaddingSize.call( this, type );
 
-			if ( typeof size != 'string' && isBorderBox && !( CKEDITOR.env.ie && CKEDITOR.env.quirks ) )
-				size -= marginAndPaddingSize.call( this, type );
-
-			this.setStyle( type, CKEDITOR.tools.cssLength( size ) );
-		}
+		this.setStyle( type, CKEDITOR.tools.cssLength( size ) );
 	};
 
 	/**
