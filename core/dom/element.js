@@ -2243,16 +2243,16 @@ CKEDITOR.dom.element.clearMarkers = function( database, element, removeFromDatab
 	 * Sets the element size considering the box model.
 	 *
 	 * @param {'width'/'height'} type The dimension to set.
-	 * @param {Number/String} size The length unit.
+	 * @param {Number} size The length unit in px.
 	 * @param {Boolean} isBorderBox Apply the size based on the border box model.
 	 */
 	CKEDITOR.dom.element.prototype.setSize = function( type, size, isBorderBox ) {
-		size = CKEDITOR.tools.convertToPx( size );
+		if ( typeof size == 'number' ) {
+			if ( isBorderBox && !( CKEDITOR.env.ie && CKEDITOR.env.quirks ) )
+				size -= marginAndPaddingSize.call( this, type );
 
-		if ( typeof size != 'string' && isBorderBox && !( CKEDITOR.env.ie && CKEDITOR.env.quirks ) )
-			size -= marginAndPaddingSize.call( this, type );
-
-		this.setStyle( type, CKEDITOR.tools.cssLength( size ) );
+			this.setStyle( type, size + 'px' );
+		}
 	};
 
 	/**
